@@ -12,12 +12,16 @@ RUN apt-get install -y jq
 RUN apt-get install -y unzip
 RUN apt-get install -y wget
 RUN apt-get install -y python
+RUN apt-get install -y python-pip
 
 # AWS client
 RUN curl https://s3.amazonaws.com/aws-cli/awscli-bundle.zip -o awscli-bundle.zip
 RUN unzip awscli-bundle.zip
 RUN ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
 RUN rm -rf awscli-bundle/ awscli-bundle.zip
+
+# EB cli (Elastic Beanstalk)
+RUN pip install awsebcli --upgrade
 
 # Docker
 RUN curl -sSL https://get.docker.com/ | sh
