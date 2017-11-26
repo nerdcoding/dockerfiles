@@ -21,8 +21,9 @@ RUN unzip awscli-bundle.zip
 RUN ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
 RUN rm -rf awscli-bundle/ awscli-bundle.zip
 
-# EB cli (Elastic Beanstalk)
-RUN pip install awsebcli --upgrade
+# Amazon ECS CLI
+RUN curl -o /usr/local/bin/ecs-cli https://s3.amazonaws.com/amazon-ecs-cli/ecs-cli-linux-amd64-latest
+RUN chmod 755 /usr/local/bin/ecs-cli
 
 # Docker
 RUN curl -sSL https://get.docker.com/ | sh
@@ -36,7 +37,7 @@ RUN mv hugo /usr/local/bin/hugo
 RUN rm -rf hugo_${HUGO_VERSION}_Linux-64bit.tar.gz
 
 # Terraform
-ENV TERRAFORM_VERSION="0.10.8"
+ENV TERRAFORM_VERSION="0.11.0"
 RUN wget https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip
 RUN unzip terraform_${TERRAFORM_VERSION}_linux_amd64.zip
 RUN chmod 711 terraform
@@ -61,4 +62,5 @@ RUN wget https://github.com/kubernetes/kops/releases/download/${KOPS_VERSION}/ko
 RUN chmod +x kops-linux-amd64
 RUN mv kops-linux-amd64 /usr/local/bin/kops
 
-
+# Ansible
+RUN pip install ansible
