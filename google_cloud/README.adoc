@@ -1,0 +1,113 @@
+## Google Cloud Dockerfile
+
+Simple Dockerfile contains some tools which could be used with Google Cloud. A image based on this Dockerfile contains:
+
+* Google Cloud SDK
+* TravisCI command line tool
+
+### Build image 
+`docker build -t <image_name> .`
+
+### Run container 
+`docker run -it <image_name> /bin/bash`
+
+### Usage of the container
+
+#### Initialize SDK
+
+`gcloud init`
+
+Make sure SKD is connected with project and a compute zone
+
+----
+gcloud config list
+
+[compute]
+region = europe-west1
+zone = europe-west1-b
+[core]
+account = xxx
+disable_usage_reporting = True
+project = <project-name>
+----
+
+#### Creating a Kubernetes Engine Cluster
+
+*Create cluster* +
+`gcloud container clusters create <CLUSTER_NAME> --num-nodes 3`
+
+*Or link to exiting cluster* +
+`gcloud container clusters get-credentials <CLUSTER_NAME>`
+
+#### Check cluster
+
+----
+kubectl cluster-info
+kubectl get nodes
+kubectl describe node <node-name>
+----
+
+#### Creating service account credential key in JSON
+
+https://cloud.google.com/storage/docs/authentication#service_accounts
+
+
+#### Deleting a Kubernetes Engine Cluster
+
+*Delete Service (if exists)* +
+`kubectl delete service <service-name>`
+
+*Delete cluster* +
+`gcloud container clusters delete <CLUSTER_NAME>`
+
+#### Deploy application to Kubernetes Engine Cluster
+
+Create deployment for an application image on Dockerhub: +
+`kubectl apply -f deployment.yml`
+
+.deployment.yml
+----
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: <app-name>-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: <app-name>
+  template:
+    metadata:
+      name: <app-name>
+      labels:
+        app: <app-name>
+        env: test
+    spec:
+      containers:
+      - name: <app-name>
+        image: nerdcoding/<app-name>:<app-version>
+        ports:
+        - containerPort: <app-port>
+        readinessProbe:
+          httpGet:
+            path: <app-context-path>/api/health
+            port: <app-port>
+----
+
+Create a Service to access the application: +
+`kubectl apply -f service.yml`
+
+.service.yml
+----
+apiVersion: v1
+kind: Service
+metadata:
+  name: <app-name>-loadbalancer
+spec:
+  type: LoadBalancer
+  ports:
+  - port: <app-port>
+    targetPort: <app-port>
+  selector:
+    app: <app-name>
+----
