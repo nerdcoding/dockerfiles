@@ -1,4 +1,4 @@
-FROM debian:9.2
+FROM debian:9.4
 
 RUN echo 'alias ll="ls -al"' >> /etc/bash.bashrc
 
@@ -28,39 +28,13 @@ RUN chmod 755 /usr/local/bin/ecs-cli
 # Docker
 RUN curl -sSL https://get.docker.com/ | sh
 
-# Hugo
-ENV HUGO_VERSION="0.30.2"
-RUN wget https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_${HUGO_VERSION}_Linux-64bit.tar.gz
-RUN tar -xf hugo_${HUGO_VERSION}_Linux-64bit.tar.gz
-RUN chmod 711 hugo
-RUN mv hugo /usr/local/bin/hugo
-RUN rm -rf hugo_${HUGO_VERSION}_Linux-64bit.tar.gz
-
 # Terraform
-ENV TERRAFORM_VERSION="0.11.0"
+ENV TERRAFORM_VERSION="0.11.4"
 RUN wget https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip
 RUN unzip terraform_${TERRAFORM_VERSION}_linux_amd64.zip
 RUN chmod 711 terraform
 RUN mv terraform /usr/local/bin/terraform
 RUN rm -rf terraform_${TERRAFORM_VERSION}_linux_amd64.zip
-
-# Kubectl
-ENV KUBECTL_VERSION="1.8.2"
-RUN wget https://storage.googleapis.com/kubernetes-release/release/v${KUBECTL_VERSION}/bin/linux/amd64/kubectl
-RUN chmod 711 kubectl
-RUN mv kubectl /usr/local/bin/kubectl
-
-# Kubefed
-ENV KUBEFED_VERSION="1.8.2"
-RUN wget https://storage.googleapis.com/kubernetes-release/release/v${KUBEFED_VERSION}/bin/linux/amd64/kubefed
-RUN chmod 711 kubefed
-RUN mv kubefed /usr/local/bin/kubefed
-
-# Kops
-ENV KOPS_VERSION="1.7.1"
-RUN wget https://github.com/kubernetes/kops/releases/download/${KOPS_VERSION}/kops-linux-amd64
-RUN chmod +x kops-linux-amd64
-RUN mv kops-linux-amd64 /usr/local/bin/kops
 
 # Ansible
 RUN pip install ansible
