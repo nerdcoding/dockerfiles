@@ -1,0 +1,34 @@
+
+Extends the https://hub.docker.com/_/postgres/[official postgres docker image] to run a PostgreSQL server with multiple
+databases.
+
+### Create image
+
+----
+docker build -t <image_name> -f Dockerfile .
+----
+
+
+### Configure databases
+
+The databases are configured by the environment variable `PSQL_DATABASES` and the associated users and passwords with
+`PSQL_USERS` and `PSQL_PASSWORDS`. Multiple databases, users and passwords are separated by comma. Note each of the
+three variables must define the same amount of values.
+
+Example:
+----
+PSQL_DATABASES=db1,db2,db3
+PSQL_USERS=user1,user2,user3
+PSQL_PASSWORDS=pass1,pass2,pass3
+----
+Creates three databases:
+
+1. database: `db1` user: `user1` password: `pass1`
+2. database: `db2` user: `user2` password: `pass2`
+3. database: `db3` user: `user3` password: `pass3`
+
+### Run container
+
+----
+docker run --name <container_name> -e PSQL_DATABASES=<comma separated database names> -e PSQL_USERS=<comma separated users> -e PSQL_PASSWORDS=<comma separated passwords> -p 5432:5432 -d <image_name>
+----
