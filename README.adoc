@@ -3,5 +3,5 @@
 Collection of some Dockerfiles for various use cases:
 
 * https://github.com/nerdcoding/dockerfiles/tree/master/aws[AWS]
-* https://github.com/nerdcoding/dockerfiles/tree/master/aws[Google Cloud SDK]
-* https://github.com/nerdcoding/dockerfiles/tree/master/aws[PostgreSQL with multiple databases]
+* https://github.com/nerdcoding/dockerfiles/tree/master/google_cloud[Google Cloud SDK]
+* https://github.com/nerdcoding/dockerfiles/tree/master/postgres-muliple-databases[PostgreSQL with multiple databases]
