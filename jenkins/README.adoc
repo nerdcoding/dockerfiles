@@ -1,0 +1,16 @@
+
+## Jenkins
+
+Extends the https://github.com/jenkinsci/docker[official Jenkins docker image] with pre installed plugins.
+
+### Create image
+
+----
+docker build -t my-jenkins -f Dockerfile .
+----
+
+### Run container
+
+----
+docker run -p 8080:8080 -p 50000:50000 -v <local-jenkins-home>:/var/jenkins_home my-jenkins
+----
