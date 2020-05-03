@@ -1,2 +1,2 @@
-FROM postgres:9.6
+FROM postgres:12.2
 COPY create-database.sh /docker-entrypoint-initdb.d/
